@@ -144,6 +144,18 @@ public class Employe implements Serializable {
 		this.timesheets = timesheets;
 	}
 	
+	//constructeur MTSelim
+
+	public Employe(int id, String prenom, String nom, String email, boolean isActif, Role role) {
+	super();
+	this.id = id;
+	this.prenom = prenom;
+	this.nom = nom;
+	this.email = email;
+	this.isActif = isActif;
+	this.role = role;
+	}
+
 	
 	
 }
