@@ -19,6 +19,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import tn.esprit.spring.entities.Contrat;
 import tn.esprit.spring.entities.Employe;
 import tn.esprit.spring.entities.Role;
+import tn.esprit.spring.exceptions.ResourceNotFoundException;
 import tn.esprit.spring.repository.ContratRepository;
 
 @RunWith(SpringRunner.class)
@@ -50,9 +51,10 @@ ContratRepository contratRepoistory;
 
 @Test
 @Rollback(false)
-public void testDeleteContrat() {
+public void testDeleteContrat(int contratId) {
 	
-	    Contrat contrat = contratRepoistory.findById(13).get();
+	    Contrat contrat = contratRepoistory.findById(contratId).orElseThrow(() -> new ResourceNotFoundException("contrat not found with this id : " + contratId));
+	    
 	     
 	    contratRepoistory.deleteById(contrat.getReference());
 	     

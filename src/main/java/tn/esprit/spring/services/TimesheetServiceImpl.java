@@ -15,6 +15,7 @@ import tn.esprit.spring.entities.Mission;
 import tn.esprit.spring.entities.Role;
 import tn.esprit.spring.entities.Timesheet;
 import tn.esprit.spring.entities.TimesheetPK;
+import tn.esprit.spring.exceptions.ResourceNotFoundException;
 import tn.esprit.spring.repository.DepartementRepository;
 import tn.esprit.spring.repository.EmployeRepository;
 import tn.esprit.spring.repository.MissionRepository;
@@ -33,7 +34,7 @@ public class TimesheetServiceImpl implements ITimesheetService {
 	@Autowired
 	EmployeRepository employeRepository;
 	
-	private static final Logger l = LogManager.getLogger(ContratServiceImplTest.class);
+	private static final Logger l = LogManager.getLogger(TimesheetServiceImpl.class);
 
 	
 	public int ajouterMission(Mission mission) {
@@ -42,8 +43,8 @@ public class TimesheetServiceImpl implements ITimesheetService {
 	}
     
 	public void affecterMissionADepartement(int missionId, int depId) {
-		Mission mission = missionRepository.findById(missionId).get();
-		Departement dep = deptRepoistory.findById(depId).get();
+		Mission mission = missionRepository.findById(missionId).orElseThrow(() -> new ResourceNotFoundException("mission not found with this id : " + missionId));
+		Departement dep = deptRepoistory.findById(depId).orElseThrow(() -> new ResourceNotFoundException("département not found with this id : " + depId));
 		mission.setDepartement(dep);
 		missionRepository.save(mission);
 		
@@ -66,8 +67,8 @@ public class TimesheetServiceImpl implements ITimesheetService {
 	
 	public void validerTimesheet(int missionId, int employeId, Date dateDebut, Date dateFin, int validateurId) {
 		l.info("In valider Timesheet");
-		Employe validateur = employeRepository.findById(validateurId).get();
-		Mission mission = missionRepository.findById(missionId).get();
+		Employe validateur = employeRepository.findById(validateurId).orElseThrow(() -> new ResourceNotFoundException("employé not found with this id : " + employeId));
+		Mission mission = missionRepository.findById(missionId).orElseThrow(() -> new ResourceNotFoundException("mission not found with this id : " + missionId));
 		//verifier s'il est un chef de departement (interet des enum)
 		if(!validateur.getRole().equals(Role.CHEF_DEPARTEMENT)){
 			l.debug("l'employe doit etre chef de departement pour valider une feuille de temps !");
