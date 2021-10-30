@@ -21,6 +21,9 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 	@Autowired
 	DepartementRepository deptRepoistory;
 	
+	String e = "entreprise not found with this id : ";
+	String d = "département not found with this id : " ;
+	
 	public int ajouterEntreprise(Entreprise entreprise) {
 		entrepriseRepoistory.save(entreprise);
 		return entreprise.getId();
@@ -37,8 +40,8 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 				// ==> c'est l'objet departement(le master) qui va mettre a jour l'association
 				//Rappel : la classe qui contient mappedBy represente le bout Slave
 				//Rappel : Dans une relation oneToMany le mappedBy doit etre du cote one.
-				Entreprise entrepriseManagedEntity = entrepriseRepoistory.findById(entrepriseId).orElseThrow(() -> new ResourceNotFoundException("entreprise not found with this id : " + entrepriseId));
-				Departement depManagedEntity = deptRepoistory.findById(depId).orElseThrow(() -> new ResourceNotFoundException("département not found with this id : " + depId));
+				Entreprise entrepriseManagedEntity = entrepriseRepoistory.findById(entrepriseId).orElseThrow(() -> new ResourceNotFoundException( e + entrepriseId));
+				Departement depManagedEntity = deptRepoistory.findById(depId).orElseThrow(() -> new ResourceNotFoundException(d + depId));
 				
 				depManagedEntity.setEntreprise(entrepriseManagedEntity);
 				deptRepoistory.save(depManagedEntity);
@@ -46,7 +49,7 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 	}
 	
 	public List<String> getAllDepartementsNamesByEntreprise(int entrepriseId) {
-		Entreprise entrepriseManagedEntity = entrepriseRepoistory.findById(entrepriseId).orElseThrow(() -> new ResourceNotFoundException("entrepeise not found with this id : " + entrepriseId));	
+		Entreprise entrepriseManagedEntity = entrepriseRepoistory.findById(entrepriseId).orElseThrow(() -> new ResourceNotFoundException(e + entrepriseId));	
 		List<String> depNames = new ArrayList<>();
 		for(Departement dep : entrepriseManagedEntity.getDepartements()){
 			depNames.add(dep.getName());
@@ -57,17 +60,17 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 
 	@Transactional
 	public void deleteEntrepriseById(int entrepriseId) {
-		entrepriseRepoistory.delete(entrepriseRepoistory.findById(entrepriseId).orElseThrow(() -> new ResourceNotFoundException("entrepeise not found with this id : " + entrepriseId)));	
+		entrepriseRepoistory.delete(entrepriseRepoistory.findById(entrepriseId).orElseThrow(() -> new ResourceNotFoundException(e + entrepriseId)));	
 	}
 
 	@Transactional
 	public void deleteDepartementById(int depId) {
-		deptRepoistory.delete(deptRepoistory.findById(depId).orElseThrow(() -> new ResourceNotFoundException("département not found with this id : " + depId)));	
+		deptRepoistory.delete(deptRepoistory.findById(depId).orElseThrow(() -> new ResourceNotFoundException(d + depId)));	
 	}
 
 
 	public Entreprise getEntrepriseById(int entrepriseId) {
-		return entrepriseRepoistory.findById(entrepriseId).orElseThrow(() -> new ResourceNotFoundException("entrepeise not found with this id : " + entrepriseId));	
+		return entrepriseRepoistory.findById(entrepriseId).orElseThrow(() -> new ResourceNotFoundException(e+ entrepriseId));	
 	}
 
 }

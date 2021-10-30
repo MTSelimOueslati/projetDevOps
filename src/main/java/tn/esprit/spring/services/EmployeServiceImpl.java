@@ -31,6 +31,8 @@ public class EmployeServiceImpl implements IEmployeService {
 	ContratRepository contratRepoistory;
 	@Autowired
 	TimesheetRepository timesheetRepository;
+	
+	String e = "entreprise not found with this id : ";
 
 	public int ajouterEmploye(Employe employe) {
 		employeRepository.save(employe);
@@ -38,7 +40,7 @@ public class EmployeServiceImpl implements IEmployeService {
 	}
 
 	public void mettreAjourEmailByEmployeId(String email, int employeId) {
-		Employe employe = employeRepository.findById(employeId).orElseThrow(() -> new ResourceNotFoundException("employé not found with this id : " + employeId));
+		Employe employe = employeRepository.findById(employeId).orElseThrow(() -> new ResourceNotFoundException(e + employeId));
 		employe.setEmail(email);
 		employeRepository.save(employe);
 
@@ -47,7 +49,7 @@ public class EmployeServiceImpl implements IEmployeService {
 	@Transactional	
 	public void affecterEmployeADepartement(int employeId, int depId) {
 		Departement depManagedEntity = deptRepoistory.findById(depId).orElseThrow(() -> new ResourceNotFoundException("département not found with this id : " + depId));
-		Employe employeManagedEntity = employeRepository.findById(employeId).orElseThrow(() -> new ResourceNotFoundException("employé not found with this id : " + employeId));
+		Employe employeManagedEntity = employeRepository.findById(employeId).orElseThrow(() -> new ResourceNotFoundException(e + employeId));
 		
 
 
@@ -84,7 +86,7 @@ public class EmployeServiceImpl implements IEmployeService {
 
 	public void affecterContratAEmploye(int contratId, int employeId) {
 		Contrat contratManagedEntity = contratRepoistory.findById(contratId).orElseThrow(() -> new ResourceNotFoundException("contrat not found with this id : " + contratId));
-		Employe employeManagedEntity = employeRepository.findById(employeId).orElseThrow(() -> new ResourceNotFoundException("employé not found with this id : " + employeId));
+		Employe employeManagedEntity = employeRepository.findById(employeId).orElseThrow(() -> new ResourceNotFoundException(e + employeId));
 
 		contratManagedEntity.setEmploye(employeManagedEntity);
 		contratRepoistory.save(contratManagedEntity);
@@ -92,12 +94,12 @@ public class EmployeServiceImpl implements IEmployeService {
 	}
 
 	public String getEmployePrenomById(int employeId) {
-		Employe employeManagedEntity = employeRepository.findById(employeId).orElseThrow(() -> new ResourceNotFoundException("employé not found with this id : " + employeId));
+		Employe employeManagedEntity = employeRepository.findById(employeId).orElseThrow(() -> new ResourceNotFoundException(e + employeId));
 		return employeManagedEntity.getPrenom();
 	}
 	public void deleteEmployeById(int employeId)
 	{
-		Employe employe = employeRepository.findById(employeId).orElseThrow(() -> new ResourceNotFoundException("employé not found with this id : " + employeId));
+		Employe employe = employeRepository.findById(employeId).orElseThrow(() -> new ResourceNotFoundException(e + employeId));
 
 		//Desaffecter l'employe de tous les departements
 		//c'est le bout master qui permet de mettre a jour

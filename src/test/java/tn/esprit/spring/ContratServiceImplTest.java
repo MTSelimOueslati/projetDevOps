@@ -1,4 +1,4 @@
-package tn.esprit.spring.services;
+package tn.esprit.spring;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
@@ -15,12 +15,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
-
 import tn.esprit.spring.entities.Contrat;
 import tn.esprit.spring.entities.Employe;
 import tn.esprit.spring.entities.Role;
 import tn.esprit.spring.exceptions.ResourceNotFoundException;
 import tn.esprit.spring.repository.ContratRepository;
+import tn.esprit.spring.services.IEmployeService;
+
+
+
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
