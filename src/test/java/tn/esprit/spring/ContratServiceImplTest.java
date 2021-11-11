@@ -54,9 +54,9 @@ ContratRepository contratRepoistory;
 
 @Test
 @Rollback(false)
-public void testDeleteContrat(int contratId) {
+public void testDeleteContrat() {
 	
-	    Contrat contrat = contratRepoistory.findById(contratId).orElseThrow(() -> new ResourceNotFoundException("contrat not found with this id : " + contratId));
+	    Contrat contrat = contratRepoistory.findById(1).orElseThrow(() -> new ResourceNotFoundException("contrat not found " ));
 	    
 	     
 	    contratRepoistory.deleteById(contrat.getReference());
