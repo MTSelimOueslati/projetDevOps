@@ -154,5 +154,9 @@ public class EmployeServiceImpl implements IEmployeService {
 	public List<Employe> getAllEmployes() {
 				return (List<Employe>) employeRepository.findAll();
 	}
+	
+	public List<Contrat> getAllContrats() {
+		return (List<Contrat>) contratRepoistory.findAll();
+}
 
 }

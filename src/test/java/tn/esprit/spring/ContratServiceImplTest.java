@@ -4,10 +4,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,7 @@ import tn.esprit.spring.entities.Employe;
 import tn.esprit.spring.entities.Role;
 import tn.esprit.spring.exceptions.ResourceNotFoundException;
 import tn.esprit.spring.repository.ContratRepository;
+import tn.esprit.spring.repository.EmployeRepository;
 import tn.esprit.spring.services.IEmployeService;
 
 
@@ -36,46 +40,62 @@ IEmployeService iEmployeService;
 
 @Autowired
 ContratRepository contratRepoistory;
+@Autowired
+private EmployeRepository employeRepository;
 
+private static String update = "update";
 
+private Contrat contrat;
+private Employe employe1;
 
-@Test
+@Before
+public void setUp() {
+	employe1 = new Employe("Oueslati", "mohamed taieb", "mohamedtaieb.oueslati@gmail.com", true, Role.INGENIEUR);
+	contrat = contratRepoistory.save(new Contrat(new Date(2020, 04, 10), "CDI", 2000));
+	employeRepository.save(employe1);
+	contrat.setEmploye(employe1);
+	contratRepoistory.save(contrat);
+}
 
-	public void testAddContrat()  {
-		Employe e = new Employe (1,"mohamed taieb selim","oueslati","mohamedtaiebselim.oueslati@esprit.tn",true,Role.INGENIEUR);
-		String sDate1="02/02/2000";
-		Date date1=new Date(sDate1);
-		Contrat c = new Contrat(1, date1, "test", 1000,e);
-		int contratAdded = iEmployeService.ajouterContrat(c);
-		assertEquals(contratAdded,c.getReference(),iEmployeService.ajouterContrat(c));
-		l.info("contrat ajouté: ", c);
+@After
+public void tearDown() {
+	contratRepoistory.deleteAll();
+	employeRepository.deleteAll();
 }
 
 
 @Test
-@Rollback(false)
-public void testDeleteContrat() {
-	
-	    Contrat contrat = contratRepoistory.findById(1).orElseThrow(() -> new ResourceNotFoundException("contrat not found " ));
-	    
-	     
-	    contratRepoistory.deleteById(contrat.getReference());
-	     
-     
-	    assertThat(contrat).isNull();       
-     
+public void TestajouterContrat() {
+	String sDate1="02/02/2000";
+	Date date1=new Date(sDate1);
+	Contrat contrat = new Contrat(1, date1, "test", 1000,employe1);
+	int contratadd = iEmployeService.ajouterContrat(contrat);
+	assertEquals(contratadd,contrat.getReference());
+}
+
+/*
+@Test
+public void TestgetAllContratByEmploye() {
+	Contrat contrat1 = iEmployeService.getAllContratByEmploye(employe1);
+	l.info("GetContratByEmploye : "+ contrat1);
+	assertThat(contrat1.getReference()).isEqualTo(contrat.getReference());
+}
+*/
+@Test
+public void TestgetAllContrats() {
+List<Contrat> contrats = iEmployeService.getAllContrats();
+assertThat(contrats.size()).isGreaterThan(0);
 }
 
 @Test
-public void testdeleteAllContratJPQL() {
-	l.info("Start testdeleteAllContratJPQL method test");
+public void TestdeleteContratById() {
 
-
-	iEmployeService.deleteAllContratJPQL();
-	assertNull(contratRepoistory.findAll());
-	l.info("End deleteAllEntrepriseJPQL method test");
-
+iEmployeService.deleteContratById(contrat.getReference());
+ Optional<Contrat> contratdelete = contratRepoistory.findById(contrat.getReference());
+ assertThat(contratdelete).isEmpty();
 }
+
+
 
 
 }
