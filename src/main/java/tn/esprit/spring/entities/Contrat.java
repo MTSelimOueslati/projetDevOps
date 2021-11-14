@@ -22,7 +22,7 @@ public class Contrat implements Serializable {
 	
 	@Temporal(TemporalType.DATE)
 	private Date dateDebut;
-	
+	//type
 	private String typeContrat;
 	
 	private float salaire;

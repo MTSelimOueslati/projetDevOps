@@ -5,20 +5,20 @@ services:
    environment:
      - MYSQL_ROOT_PASSWORD=rootpassword
      - MYSQL_DATABASE=devops
-     - MYSQL_USER=root
+     - MYSQL_USER=selim
      - MYSQL_PASSWORD=root
    ports:
      - 3366:3306
  web:
-   image: mtselim/repositorymtselim:17
+   image: mtselim/repositorymtselim:19
    depends_on:
      - db
    ports:
      - 8099:8081
    environment:
      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/devops?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true
-     - SPRING_DATASOURCE_USERNAME=root
-     - DATABASE_USER=root
+     - SPRING_DATASOURCE_USERNAME=selim
+     - DATABASE_USER=selim
      - SPRING_DATASOURCE_PASSWORD=root
      - DATABASE_NAME=devops
      - DATABASE_PORT=3306
