@@ -82,7 +82,7 @@ public class EntrepriseServiceImplTest {
 		Entreprise e1 = entrepriseService.getEntrepriseById(id);
 		Assert.assertNotNull(e1);
 
-		Entreprise e2 = entrepriseService.getEntrepriseById(213232);
+		Entreprise e2 = entrepriseService.getEntrepriseById(12556);
 		Assert.assertNull(e2);
 	};
 
