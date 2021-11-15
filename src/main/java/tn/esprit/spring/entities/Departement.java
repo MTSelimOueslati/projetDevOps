@@ -43,7 +43,7 @@ public class Departement implements Serializable {
 	public Departement(String name) {
 		this.name = name;
 	}
-	
+	//constructeur 
 	public Departement(int id, String name) {
 		// TODO Auto-generated constructor stub
 		this.id = id;
